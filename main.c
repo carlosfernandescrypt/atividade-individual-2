@@ -144,3 +144,78 @@ void exibirPlaylistOrdenada(No *head) {
     // Libera a memória do array
     free(array);
 }
+
+// Função para remover uma música específica da playlist
+void removerMusica(No **head, char *musicaParaRemover) {
+    if (*head == NULL) {
+        printf("A playlist está vazia.\n");
+        return;
+    }
+
+    No *atual = *head;
+    No *anterior = NULL;
+    int encontrou = 0;
+
+    // Procura pela música na lista
+    do {
+        if (strcmp(atual->musica, musicaParaRemover) == 0) {
+            encontrou = 1;
+            break;
+        }
+        anterior = atual;
+        atual = atual->proximo;
+    } while (atual != *head);
+
+    // Se encontrou a música, remove-a da lista
+    if (encontrou) {
+        if (atual == *head && atual->proximo == *head) { // Único nó na lista
+            *head = NULL;
+        } else {
+            if (atual == *head) { // Removendo o nó cabeça
+                *head = atual->proximo;
+            }
+            anterior->proximo = atual->proximo;
+            atual->proximo->anterior = anterior;
+        }
+        free(atual);
+        printf("Música '%s' removida com sucesso!\n", musicaParaRemover);
+    } else {
+        printf("Música '%s' não encontrada na playlist.\n", musicaParaRemover);
+    }
+}
+
+// Função para solicitar ao usuário a música a ser removida
+void removerMusicaUsuario(No **head) {
+    char musicaParaRemover[100];
+
+    printf("Digite o nome da música que deseja remover: ");
+    fgets(musicaParaRemover, 100, stdin);
+    musicaParaRemover[strcspn(musicaParaRemover, "\n")] = 0; // Remove a nova linha lida pelo fgets
+
+    removerMusica(head, musicaParaRemover);
+}
+
+// Função para buscar uma música específica na playlist
+void buscarMusica(No *head, char *musicaParaBuscar) {
+    if (head == NULL) {
+        printf("A playlist está vazia.\n");
+        return;
+    }
+
+    No *atual = head;
+    int encontrou = 0;
+
+    // Procura pela música na lista
+    do {
+        if (strcmp(atual->musica, musicaParaBuscar) == 0) {
+            printf("Música encontrada: '%s' de '%s'\n", atual->musica, atual->artista);
+            encontrou = 1;
+            break;
+        }
+        atual = atual->proximo;
+    } while (atual != head);
+
+    if (!encontrou) {
+        printf("Música '%s' não encontrada na playlist.\n", musicaParaBuscar);
+    }
+}
