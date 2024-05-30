@@ -276,3 +276,77 @@ void limparArquivo() {
     printf("Limpando a lista de músicas...\n");
     printf("Dados do arquivo 'musicas.txt' foram apagados.\n");
 }
+
+int exibirMenu() {
+  int escolha;
+
+  printf("\nMenu da Playlist:\n");
+  printf("1. Exibir a playlist pela ordem de cadastro\n");
+  printf("2. Exibir a playlist ordenada pelo nome das músicas\n");
+  printf("3. Inserir novas músicas\n");
+  printf("4. Remover uma música\n");
+  printf("5. Buscar por uma música\n");
+  printf("6. Avançar para próxima música\n");
+  printf("7. Retornar a música anterior\n");
+  printf("8. Sair\n");
+  printf("Escolha uma opção: ");
+  scanf("%d", &escolha);
+  while ((getchar()) != '\n'); // Limpa o buffer do stdin
+
+  return escolha;
+}
+
+int main() {
+  No *head = NULL;
+  No *musicaAtual = NULL;
+  lerArquivoEInserirNaLista(&head);
+  musicaAtual = head; // Inicializa com a primeira música da playlist
+
+  int escolha;
+  do {
+      escolha = exibirMenu();
+
+      switch (escolha) {
+          case 1:
+              exibirPlaylist(head);
+              break;
+          case 2:
+              exibirPlaylistOrdenada(head);
+              break;
+          case 3:
+              inserirMusicaUsuario(&head);
+              atualizarLista(head);
+              break;
+          case 4:
+              removerMusicaUsuario(&head);
+              atualizarLista(head);
+              break;
+          case 5:
+              buscarMusicaUsuario(head);
+              break;
+          case 6:
+              avancarMusica(&musicaAtual);
+              break;
+          case 7:
+              retornarMusica(&musicaAtual);
+              break;
+          case 8:
+              printf("Você deseja limpar o arquivo de músicas? (S/N): ");
+              char resposta;
+              scanf(" %c", &resposta);
+              while ((getchar()) != '\n'); // Limpa o buffer do stdin
+              if (resposta == 'S' || resposta == 's') {
+                  limparArquivo();
+              }
+              printf("Saindo do programa...\n");
+              break;
+          default:
+              printf("Opção inválida. Por favor, tente novamente.\n");
+      }
+  } while (escolha != 8);
+
+  // Libera a memória alocada para a lista antes de sair
+  // Adicione aqui a lógica para liberar a memória
+
+  return 0;
+}
