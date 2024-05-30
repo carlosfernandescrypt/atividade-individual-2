@@ -219,3 +219,60 @@ void buscarMusica(No *head, char *musicaParaBuscar) {
         printf("Música '%s' não encontrada na playlist.\n", musicaParaBuscar);
     }
 }
+
+// Função para avançar para a próxima música na playlist
+void avancarMusica(No **musicaAtual) {
+    if (*musicaAtual == NULL) {
+        printf("A playlist está vazia.\n");
+        return;
+    }
+
+    *musicaAtual = (*musicaAtual)->proximo;
+    printf("Tocando agora: '%s' de '%s'\n", (*musicaAtual)->musica, (*musicaAtual)->artista);
+}
+
+
+// Função para retornar à música anterior na playlist
+void retornarMusica(No **musicaAtual) {
+    if (*musicaAtual == NULL) {
+        printf("A playlist está vazia.\n");
+        return;
+    }
+
+    *musicaAtual = (*musicaAtual)->anterior;
+    printf("Tocando agora: '%s' de '%s'\n", (*musicaAtual)->musica, (*musicaAtual)->artista);
+}
+
+// Função para atualizar a lista de músicas no arquivo txt. É chamada sempre que houver uma atualização nas músicas.
+void atualizarLista(No *head) {
+    FILE *file = fopen("musicas.txt", "w");
+    No *atual = head;
+
+    if (file == NULL) {
+        printf("Não foi possível abrir o arquivo.\n");
+        return;
+    }
+
+    do {
+        fprintf(file, "%s;%s\n", atual->artista, atual->musica);
+        atual = atual->proximo;
+    } while (atual != head);
+
+    fclose(file);
+
+    printf("Lista de músicas atualizada.\n");
+}
+
+// Função para limpar o arquivo de músicas toda vez que a opção 8 (sair do programa) do menu for chamada.
+void limparArquivo() {
+    FILE *file = fopen("musicas.txt", "w");
+
+    if (file == NULL) {
+        printf("Não foi possível abrir o arquivo.\n");
+        return;
+    }
+
+    fclose(file);
+    printf("Limpando a lista de músicas...\n");
+    printf("Dados do arquivo 'musicas.txt' foram apagados.\n");
+}
