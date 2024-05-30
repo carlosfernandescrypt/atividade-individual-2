@@ -67,3 +67,80 @@ void exibirPlaylist(No *head) {
         atual = atual->proximo;
     } while (atual != head);
 }
+
+// Função auxiliar para trocar dois nós
+void trocarNos(No *a, No *b) {
+    char artistaTemp[100];
+    char musicaTemp[100];
+    strcpy(artistaTemp, a->artista);
+    strcpy(musicaTemp, a->musica);
+    strcpy(a->artista, b->artista);
+    strcpy(a->musica, b->musica);
+    strcpy(b->artista, artistaTemp);
+    strcpy(b->musica, musicaTemp);
+}
+
+// Função para ordenar a playlist pelo nome da música
+void inserirMusicaUsuario(No **head) {
+    char artista[100];
+    char musica[100];
+
+    printf("Digite o nome do artista: ");
+    fgets(artista, 100, stdin);
+    artista[strcspn(artista, "\n")] = 0; // Remove a nova linha lida pelo fgets
+
+    printf("Digite o nome da música: ");
+    fgets(musica, 100, stdin);
+    musica[strcspn(musica, "\n")] = 0; // Remove a nova linha lida pelo fgets
+
+    inserirNo(head, artista, musica);
+    printf("Música '%s' de '%s' adicionada com sucesso!\n", musica, artista);
+}
+
+void exibirPlaylistOrdenada(No *head) {
+    if (head == NULL) {
+        printf("A playlist está vazia.\n");
+        return;
+    }
+
+    // Conta o número de músicas na playlist
+    int numMusicas = 0;
+    No *atual = head;
+    do {
+        numMusicas++;
+        atual = atual->proximo;
+    } while (atual != head);
+
+    // Cria um array para armazenar as músicas
+    No **array = malloc(numMusicas * sizeof(No*));
+
+    // Copia as músicas para o array
+    atual = head;
+    for (int i = 0; i < numMusicas; i++) {
+        array[i] = atual;
+        atual = atual->proximo;
+    }
+
+    // Ordena o array
+    for (int i = 0; i < numMusicas - 1; i++) {
+        for (int j = 0; j < numMusicas - i - 1; j++) {
+            if (strcmp(array[j]->musica, array[j + 1]->musica) > 0) {
+                No *temp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = temp;
+            }
+        }
+    }
+
+    // Cria uma nova lista a partir do array ordenado
+    No *novaHead = NULL;
+    for (int i = 0; i < numMusicas; i++) {
+        inserirNo(&novaHead, array[i]->artista, array[i]->musica);
+    }
+
+    // Exibe a nova lista
+    exibirPlaylist(novaHead);
+
+    // Libera a memória do array
+    free(array);
+}
