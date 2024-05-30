@@ -32,3 +32,38 @@ void inserirNo(No **head, char *artista, char *musica) {
         ultimo->proximo = novoNo;
     }
 }
+
+// Função para ler o arquivo e preencher a lista
+void lerArquivoEInserirNaLista(No **head) {
+    FILE *arquivo = fopen("musicas.txt", "r");
+    char linha[200];
+    char *artista, *musica;
+
+    if (arquivo == NULL) {
+        printf("Não foi possível abrir o arquivo.\n");
+        return;
+    }
+    // Lê cada linha do arquivo e insere na lista
+    while (fgets(linha, sizeof(linha), arquivo)) {
+        artista = strtok(linha, ";");
+        musica = strtok(NULL, "\n");
+        if (artista && musica) {
+            inserirNo(head, artista, musica);
+        }
+    }
+
+    fclose(arquivo);
+}
+
+// Função para exibir a playlist
+void exibirPlaylist(No *head) {
+    if (head == NULL) {
+        printf("A playlist está vazia.\n");
+        return;
+    }
+    No *atual = head;
+    do {
+        printf("Artista: %s - Música: %s\n", atual->artista, atual->musica);
+        atual = atual->proximo;
+    } while (atual != head);
+}
