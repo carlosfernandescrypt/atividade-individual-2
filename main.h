@@ -22,5 +22,7 @@ void buscarMusica(No *cabeca, char *musicaParaBuscar);
 void buscarMusicaUsuario(No *cabeca);
 void avancarMusica(No **musicaAtual);
 void retornarMusica(No **musicaAtual);
+void atualizarLista(No *head);
+void limparArquivo();
 
 #endif // MAIN_H
