@@ -220,6 +220,17 @@ void buscarMusica(No *head, char *musicaParaBuscar) {
     }
 }
 
+// Função para solicitar ao usuário a música a ser buscada
+void buscarMusicaUsuario(No *head) {
+    char musicaParaBuscar[100];
+
+    printf("Digite o nome da música que deseja buscar: ");
+    fgets(musicaParaBuscar, 100, stdin);
+    musicaParaBuscar[strcspn(musicaParaBuscar, "\n")] = 0; // Remove a nova linha lida pelo fgets
+
+    buscarMusica(head, musicaParaBuscar);
+}
+
 // Função para avançar para a próxima música na playlist
 void avancarMusica(No **musicaAtual) {
     if (*musicaAtual == NULL) {
