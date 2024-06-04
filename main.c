@@ -254,7 +254,7 @@ void avancarMusica(No **musicaAtual) {
     }
 
     *musicaAtual = (*musicaAtual)->proximo;
-    printf("Tocando agora: '%s' de '%s'\n", (*musicaAtual)->musica, (*musicaAtual)->artista);
+    printf("\nTocando agora: '%s' de '%s'\n", (*musicaAtual)->musica, (*musicaAtual)->artista);
 }
 
 
@@ -266,7 +266,7 @@ void retornarMusica(No **musicaAtual) {
     }
 
     *musicaAtual = (*musicaAtual)->anterior;
-    printf("Tocando agora: '%s' de '%s'\n", (*musicaAtual)->musica, (*musicaAtual)->artista);
+    printf("\nTocando agora: '%s' de '%s'\n", (*musicaAtual)->musica, (*musicaAtual)->artista);
 }
 
 // Função para atualizar a lista de músicas no arquivo txt. É chamada sempre que houver uma atualização nas músicas.
@@ -303,8 +303,16 @@ void limparArquivo() {
     printf("Dados do arquivo 'musicas.txt' foram apagados.\n");
 }
 
+void exibirMusicaAtual(No **musicaAtual) {
+    if (*musicaAtual != NULL) {
+        printf("\nTocando agora: '%s' de '%s'\n", (*musicaAtual)->musica, (*musicaAtual)->artista);
+    } else {
+        printf("Nenhuma música está tocando no momento.\n");
+    }
+}
+
 int exibirMenu() {
-  int escolha;
+    int escolha;
 
   printf("\nMenu da Playlist:\n");
   printf("1. Exibir a playlist pela ordem de cadastro\n");
@@ -327,7 +335,7 @@ int main() {
   No *musicaAtual = NULL;
   lerArquivoEInserirNaLista(&head);
   musicaAtual = head; // Inicializa com a primeira música da playlist
-
+  exibirMusicaAtual(&musicaAtual);
   int escolha;
   do {
       escolha = exibirMenu();
