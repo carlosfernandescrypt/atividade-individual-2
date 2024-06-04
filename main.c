@@ -153,7 +153,7 @@ void removerMusica(No **head, char *musicaParaRemover) {
     }
 
     No *atual = *head;
-    No *anterior = NULL;
+    No *anterior = atual->anterior;
     int encontrou = 0;
 
     // Procura pela música na lista
@@ -182,6 +182,21 @@ void removerMusica(No **head, char *musicaParaRemover) {
     } else {
         printf("Música '%s' não encontrada na playlist.\n", musicaParaRemover);
     }
+}
+
+void liberarMemoriaLista(No **head) {
+    if (*head == NULL) return;
+
+    No *atual = *head;
+    No *temp;
+
+    do {
+        temp = atual;
+        atual = atual->proximo;
+        free(temp);
+    } while (atual != *head);
+
+    *head = NULL;
 }
 
 // Função para solicitar ao usuário a música a ser removida
@@ -356,8 +371,7 @@ int main() {
       }
   } while (escolha != 8);
 
-  // Libera a memória alocada para a lista antes de sair
-  // Adicione aqui a lógica para liberar a memória
+  liberarMemoriaLista(&head); // Libera a memória alocada para a lista antes de sair
 
   return 0;
 }
