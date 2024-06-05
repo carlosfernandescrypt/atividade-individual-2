@@ -25,4 +25,4 @@ void retornarMusica(No **musicaAtual);
 void atualizarLista(No *head);
 void limparArquivo();
 
-#endif // MAIN_H
+#endif
