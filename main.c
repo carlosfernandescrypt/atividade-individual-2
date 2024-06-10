@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "main.h"
 
 // Definição do nó da lista circular duplamente encadeada
 typedef struct No {
